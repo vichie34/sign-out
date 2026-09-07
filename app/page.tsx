@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { CalendarDays, Clock3, Copy, Mail, MapPin, Music2, Pause, Play, Sparkles, X } from 'lucide-react'
 
-const SIGNOUT_DATE = new Date('2026-09-18T17:30:00')
+const SIGNOUT_DATE = new Date('2026-09-18T14:00:00')
 
 function getTimeLeft() {
   return Math.max(SIGNOUT_DATE.getTime() - Date.now(), 0)
@@ -117,7 +117,7 @@ export default function Page() {
         <div className="hero-visual reveal-up delay-one"><div className="portrait-frame"><img src="/graduation-hero.png" alt="Sarah celebrating her graduation" /></div><div className="hero-stamp">18<br /><span>SEP</span></div><p className="image-caption">A new chapter,<br /><em>beautifully earned.</em></p></div>
       </section>
 
-      <section id="details" className="details-section scroll-reveal"><div className="section-intro"><p className="eyebrow light"><span className="eyebrow-dot" /> Mark your calendar</p><h2>Save<br /><em>the date.</em></h2></div><div className="details-grid"><div className="detail-item"><CalendarDays /><span>DATE</span><strong>18 / 09 / 26</strong><p>Friday evening</p></div><div className="detail-item"><Clock3 /><span>SIGN-OUT</span><strong>5:30 PM</strong><p>Guests arrive from 5:00 PM</p></div><div className="detail-item"><MapPin /><span>LOCATION</span><strong>PG room block</strong></div></div></section>
+      <section id="details" className="details-section scroll-reveal"><div className="section-intro"><p className="eyebrow light"><span className="eyebrow-dot" /> Mark your calendar</p><h2>Save<br /><em>the date.</em></h2></div><div className="details-grid"><div className="detail-item"><CalendarDays /><span>DATE</span><strong>18 / 09 / 26</strong><p>Friday afternoon</p></div><div className="detail-item"><Clock3 /><span>SIGN-OUT</span><strong>2:00 PM</strong><p>Guests arrive from 1:30 PM</p></div><div className="detail-item"><MapPin /><span>LOCATION</span><strong>PG room block</strong></div></div></section>
 
       <section className="countdown-section scroll-reveal"><div><p className="eyebrow"><span className="eyebrow-dot" /> Until the moment</p><h2>The countdown<br /><em>is on.</em></h2></div><div className="countdown-grid">{Object.entries(countdown).map(([label, value]) => <div className="countdown-cell" key={label}><strong>{pad(value)}</strong><span>{label}</span></div>)}</div></section>
 
