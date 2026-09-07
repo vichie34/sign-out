@@ -105,7 +105,7 @@ export default function CataloguePage() {
                 ))}
             </section>
 
-            <footer className="catalogue-footer"><span>ADA EZE OKAFOR · CLASS OF 2026</span><Link href="/#rsvp">RSVP to celebrate <ArrowUpRight className="size-4" /></Link></footer>
+            <footer className="catalogue-footer"><span>SARAH O. I · CLASS OF 2026</span><Link href="/#rsvp">RSVP to celebrate <ArrowUpRight className="size-4" /></Link></footer>
 
             {activeImage && <div className="lightbox-backdrop" role="presentation" onClick={() => setActiveImage(null)}><section className="lightbox" role="dialog" aria-modal="true" aria-label={`${activeImage.title} image viewer`} onClick={(event) => event.stopPropagation()}><button className="lightbox-close" type="button" onClick={() => setActiveImage(null)} aria-label="Close image viewer"><X className="size-5" /></button><img src={activeImage.src} alt={activeImage.alt} /><p>{activeImage.label} <span>/</span> {activeImage.title}</p></section></div>}
         </main>
