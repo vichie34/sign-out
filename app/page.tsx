@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { CalendarDays, Clock3, Copy, Mail, MapPin, Music2, Pause, Play, Sparkles, X } from 'lucide-react'
+import { CalendarDays, Clock3, Copy, Mail, MapPin, Menu, Music2, Pause, Play, Sparkles, X } from 'lucide-react'
 
 const SIGNOUT_DATE = new Date('2026-09-18T14:00:00')
 
@@ -47,7 +47,9 @@ export default function Page() {
   const [timeLeft, setTimeLeft] = useState(0)
   const [halo, setHalo] = useState({ x: 50, y: 50 })
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [rsvpOpen, setRsvpOpen] = useState(false)
+  const navRef = useRef<HTMLElement | null>(null)
   const { playing, toggle } = useCelebrationLoop(audioRef)
 
   useEffect(() => {
@@ -84,6 +86,24 @@ export default function Page() {
     }
   }, [])
 
+  useEffect(() => {
+    if (!isMenuOpen) return
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsMenuOpen(false)
+    }
+    const closeOnOutsideClick = (event: globalThis.MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(event.target as Node)) setIsMenuOpen(false)
+    }
+
+    document.addEventListener('keydown', closeOnEscape)
+    document.addEventListener('mousedown', closeOnOutsideClick)
+    return () => {
+      document.removeEventListener('keydown', closeOnEscape)
+      document.removeEventListener('mousedown', closeOnOutsideClick)
+    }
+  }, [isMenuOpen])
+
   const openRsvp = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault()
     window.history.replaceState(null, '', '#rsvp')
@@ -94,6 +114,8 @@ export default function Page() {
     window.history.replaceState(null, '', window.location.pathname)
     setRsvpOpen(false)
   }
+
+  const closeMenu = () => setIsMenuOpen(false)
 
   const countdown = useMemo(() => {
     const safe = Math.max(timeLeft, 0)
@@ -110,7 +132,7 @@ export default function Page() {
     <main className="min-h-screen overflow-hidden bg-background text-foreground">
       <audio ref={audioRef} src="/dandelions.mp3" loop preload="metadata" />
       <div className="pointer-halo" style={{ left: halo.x, top: halo.y }} aria-hidden="true" />
-      <nav className={`site-nav${isScrolled ? ' is-scrolled' : ''}`}><a href="#top" className="brand"><span className="brand-mark"><Sparkles className="size-4" /></span> O. I. SARAH<span className="brand-year">/ 2026</span></a><div className="nav-links"><a href="#details">Details</a><a href="#story">Moments</a><a href="/catalogue">Catalogue</a><a href="#rsvp" className="nav-cta" onClick={openRsvp}>Send a gift</a></div><button className="music-control" onClick={toggle} aria-label={playing ? 'Pause celebration music' : 'Play celebration music'}>{playing ? <Pause className="size-4" /> : <Music2 className="size-4" />}</button></nav>
+      <nav ref={navRef} className={`site-nav${isScrolled ? ' is-scrolled' : ''}`}><a href="#top" className="brand" onClick={closeMenu}><span className="brand-mark"><Sparkles className="size-4" /></span> O. I. SARAH<span className="brand-year">/ 2026</span></a><div id="primary-navigation" className={`nav-links${isMenuOpen ? ' is-open' : ''}`}><a href="#details" onClick={closeMenu}>Details</a><a href="#story" onClick={closeMenu}>Moments</a><a href="/catalogue" onClick={closeMenu}>Catalogue</a><a href="#rsvp" className="nav-cta" onClick={(event) => { closeMenu(); openRsvp(event) }}>Send a gift</a></div><div className="nav-actions"><button className="mobile-menu-toggle" onClick={() => setIsMenuOpen((open) => !open)} aria-label={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'} aria-expanded={isMenuOpen} aria-controls="primary-navigation">{isMenuOpen ? <X className="size-4" /> : <Menu className="size-4" />}</button><button className="music-control" onClick={toggle} aria-label={playing ? 'Pause celebration music' : 'Play celebration music'}>{playing ? <Pause className="size-4" /> : <Music2 className="size-4" />}</button></div></nav>
 
       <section id="top" className="hero-section">
         <div className="hero-copy reveal-up"><p className="eyebrow"><span className="eyebrow-dot" /> An invitation to celebrate</p><p className="hero-kicker">SARAH OGBANG</p><h1>She did<br /><em>the thing.</em></h1><p className="hero-subtitle">Faculty of Biological Sciencies<br /><strong>B.Sc University of Calabar</strong></p><p className="class-label">CLASS OF 2026</p><a href="#details" className="hero-link"><span className="hero-link-paint">Stain my white</span><span>↘</span></a></div>
